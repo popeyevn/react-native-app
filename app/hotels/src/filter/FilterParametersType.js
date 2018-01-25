@@ -17,3 +17,8 @@ export type OnChangeFilterParams = {
   hotelFacilities?: string[],
   minScore?: ?number,
 };
+
+export type PriceRanges = {|
+  priceMax: number | null,
+  priceMin: number | null,
+|};

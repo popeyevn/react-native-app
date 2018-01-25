@@ -7,6 +7,7 @@ import type {
 import type {
   FilterParams,
   OnChangeFilterParams,
+  PriceRanges,
 } from './filter/FilterParametersType';
 
 export type HotelsReducerState = {
@@ -14,13 +15,15 @@ export type HotelsReducerState = {
   location: string,
   searchParams: SearchParams,
   filterParams: FilterParams,
+  priceRanges: PriceRanges,
 };
 
 export type HotelsReducerActions =
   | {| type: 'setSearch', search: OnChangeSearchParams |}
   | {| type: 'setFilter', filter: OnChangeFilterParams |}
   | {| type: 'setLocation', location: string |}
-  | {| type: 'setCityId', cityId: string | null |};
+  | {| type: 'setCityId', cityId: string | null |}
+  | {| type: 'setPriceRanges', priceRanges: PriceRanges |};
 
 export const defaultFilterParams = {
   starsRating: [],
@@ -43,6 +46,10 @@ const InitialHotelsState: HotelsReducerState = {
     },
   },
   filterParams: defaultFilterParams,
+  priceRanges: {
+    priceMax: null,
+    priceMin: null,
+  },
 };
 
 export default (
@@ -75,6 +82,11 @@ export default (
       return {
         ...state,
         cityId: action.cityId,
+      };
+    case 'setPriceRanges':
+      return {
+        ...state,
+        priceRanges: action.priceRanges,
       };
     default:
       return state;

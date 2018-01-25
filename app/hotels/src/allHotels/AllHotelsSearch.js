@@ -108,37 +108,27 @@ export class AllHotelsSearch extends React.Component<Props, State> {
   );
 
   render() {
-    const {
-      search,
-      filter,
-      onLocationChange,
-      onSearchChange,
-      onFilterChange,
-      location,
-      data,
-      isLoading,
-      currency,
-    } = this.props;
+    const props = this.props;
 
     return (
       <Layout>
         <SearchForm
-          onChange={onSearchChange}
-          onLocationChange={onLocationChange}
-          search={search}
-          location={location}
+          onChange={props.onSearchChange}
+          onLocationChange={props.onLocationChange}
+          search={props.search}
+          location={props.location}
           data={null}
         />
         <FilterStripe
-          filter={filter}
-          onChange={onFilterChange}
-          currency={currency}
+          filter={props.filter}
+          onChange={props.onFilterChange}
+          currency={props.currency}
         />
         {this.state.errorMessage && (
           <ErrorMessage content={this.state.errorMessage} />
         )}
-        {isLoading && <FullPageLoading />}
-        {!(isLoading || this.getCityIdFromData(data)) && (
+        {props.isLoading && <FullPageLoading />}
+        {!(props.isLoading || this.getCityIdFromData(props.data)) && (
           <GeneralError errorMessage="No relevant city was found." />
         )}
         {this.isReadyToSearch() && (
@@ -160,21 +150,24 @@ export class AllHotelsSearch extends React.Component<Props, State> {
             `}
             variables={{
               search: {
-                ...search,
-                checkin: formatDateForApi(search.checkin),
-                checkout: formatDateForApi(search.checkout),
-                cityId: this.getCityIdFromData(data),
+                ...props.search,
+                checkin: formatDateForApi(props.search.checkin),
+                checkout: formatDateForApi(props.search.checkout),
+                cityId: this.getCityIdFromData(props.data),
               },
               filter: {
-                ...filter,
-                hotelFacilities: filter.hotelFacilities.length
-                  ? filter.hotelFacilities.reduce((facilities, facility) => {
-                      facilities[facility] = true;
-                      return facilities;
-                    }, {})
+                ...props.filter,
+                hotelFacilities: props.filter.hotelFacilities.length
+                  ? props.filter.hotelFacilities.reduce(
+                      (facilities, facility) => {
+                        facilities[facility] = true;
+                        return facilities;
+                      },
+                      {},
+                    )
                   : null,
               },
-              options: { currency },
+              options: { currency: props.currency },
             }}
             render={this.renderInnerComponent}
             cacheConfig={{

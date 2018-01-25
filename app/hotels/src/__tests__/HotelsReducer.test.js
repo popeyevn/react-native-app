@@ -11,6 +11,11 @@ const defaultSearchParams = {
   },
 };
 
+const defaultPriceRanges = {
+  priceMax: 1000,
+  priceMin: 50,
+};
+
 describe('HotelsReducer', () => {
   describe('setSearch', () => {
     it('it should update search filters for list of hotels', () => {
@@ -19,6 +24,7 @@ describe('HotelsReducer', () => {
         location: '',
         searchParams: defaultSearchParams,
         filterParams: defaultFilterParams,
+        priceRanges: defaultPriceRanges,
       };
       const action = {
         type: 'setSearch',
@@ -37,6 +43,7 @@ describe('HotelsReducer', () => {
         location: '',
         searchParams: defaultSearchParams,
         filterParams: defaultFilterParams,
+        priceRanges: defaultPriceRanges,
       };
       const action = {
         type: 'setFilter',

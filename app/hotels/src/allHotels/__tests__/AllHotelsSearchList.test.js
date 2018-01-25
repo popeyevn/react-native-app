@@ -21,10 +21,18 @@ it('renders found hotels', () => {
         },
       },
     ],
+    stats: {
+      priceMax: 1000,
+      priceMin: 50,
+    },
   };
 
   renderer.render(
-    <AllHotelsSearchList data={data} openSingleHotel={voidCallback} />,
+    <AllHotelsSearchList
+      data={data}
+      openSingleHotel={voidCallback}
+      onPriceRangeChange={jest.fn()}
+    />,
   );
   expect(renderer.getRenderOutput()).toMatchSnapshot();
 });
@@ -32,10 +40,15 @@ it('renders found hotels', () => {
 it('renders a "not found" message when no hotel is found', () => {
   const data = {
     edges: [],
+    stats: null,
   };
 
   renderer.render(
-    <AllHotelsSearchList data={data} openSingleHotel={voidCallback} />,
+    <AllHotelsSearchList
+      data={data}
+      openSingleHotel={voidCallback}
+      onPriceRangeChange={jest.fn()}
+    />,
   );
   expect(renderer.getRenderOutput()).toMatchSnapshot();
 });
@@ -43,10 +56,15 @@ it('renders a "not found" message when no hotel is found', () => {
 it('renders a "not found" message when data is missing', () => {
   const data = {
     edges: null,
+    stats: null,
   };
 
   renderer.render(
-    <AllHotelsSearchList data={data} openSingleHotel={voidCallback} />,
+    <AllHotelsSearchList
+      data={data}
+      openSingleHotel={voidCallback}
+      onPriceRangeChange={jest.fn()}
+    />,
   );
   expect(renderer.getRenderOutput()).toMatchSnapshot();
 });
