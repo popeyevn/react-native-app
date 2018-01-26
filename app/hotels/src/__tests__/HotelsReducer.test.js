@@ -11,6 +11,10 @@ const defaultSearchParams = {
   },
 };
 
+const defaultCurrentSearchStats = {
+  priceMax: Number.MAX_SAFE_INTEGER,
+};
+
 describe('HotelsReducer', () => {
   describe('setSearch', () => {
     it('it should update search filters for list of hotels', () => {
@@ -19,6 +23,7 @@ describe('HotelsReducer', () => {
         location: '',
         searchParams: defaultSearchParams,
         filterParams: defaultFilterParams,
+        currentSearchStats: defaultCurrentSearchStats,
       };
       const action = {
         type: 'setSearch',
@@ -37,12 +42,33 @@ describe('HotelsReducer', () => {
         location: '',
         searchParams: defaultSearchParams,
         filterParams: defaultFilterParams,
+        currentSearchStats: defaultCurrentSearchStats,
       };
       const action = {
         type: 'setFilter',
         filter: {
           minPrice: 20,
           maxPrice: 30,
+        },
+      };
+
+      expect(HotelsReducer(state, action)).toMatchSnapshot();
+    });
+  });
+
+  describe('setCurrentSearchStats', () => {
+    it('should update currentSearchStats', () => {
+      const state = {
+        cityId: null,
+        location: '',
+        searchParams: defaultSearchParams,
+        filterParams: defaultFilterParams,
+        currentSearchStats: defaultCurrentSearchStats,
+      };
+      const action = {
+        type: 'setCurrentSearchStats',
+        currentSearchStats: {
+          priceMax: 3999,
         },
       };
 

@@ -2,26 +2,28 @@
 
 import * as React from 'react';
 import { View } from 'react-native';
+import { connect } from '@kiwicom/react-native-app-redux';
 
 import PricePopup from './PricePopup';
 import FilterButton from '../FilterButton';
 import type { OnChangeFilterParams } from '../FilterParametersType';
+import type { CurrentSearchStats } from '../../HotelsReducer';
 
 export const MIN_PRICE = 0;
-export const MAX_PRICE = 300;
 
 type Props = {|
   start: number | null,
   end: number | null,
   currency: string,
   onChange: OnChangeFilterParams => void,
+  currentSearchStats: CurrentSearchStats,
 |};
 
 type State = {|
   isPopupOpen: boolean,
 |};
 
-export default class PriceFilter extends React.Component<Props, State> {
+class PriceFilter extends React.Component<Props, State> {
   state = {
     isPopupOpen: false,
   };
@@ -40,7 +42,8 @@ export default class PriceFilter extends React.Component<Props, State> {
   }) => {
     const filter = {
       minPrice: minPrice !== MIN_PRICE ? minPrice : null,
-      maxPrice: maxPrice !== MAX_PRICE ? maxPrice : null,
+      maxPrice:
+        maxPrice !== this.props.currentSearchStats.priceMax ? maxPrice : null,
     };
     this.props.onChange(filter);
   };
@@ -66,9 +69,9 @@ export default class PriceFilter extends React.Component<Props, State> {
 
   render() {
     const min = MIN_PRICE;
-    const max = MAX_PRICE;
-    const start = this.props.start || MIN_PRICE;
-    const end = this.props.end || MAX_PRICE;
+    const max = this.props.currentSearchStats.priceMax;
+    const start = this.props.start || min;
+    const end = this.props.end || max;
     const currency = this.props.currency;
     return (
       <View>
@@ -92,3 +95,9 @@ export default class PriceFilter extends React.Component<Props, State> {
     );
   }
 }
+
+const mapStateToProps = state => ({
+  currentSearchStats: state.hotels.currentSearchStats,
+});
+
+export default connect(mapStateToProps)(PriceFilter);
